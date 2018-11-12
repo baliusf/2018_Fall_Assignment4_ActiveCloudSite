@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Net.Http;
 using IEXTrading.Models;
+using IEXTrading.Models.ViewModel;
 using Newtonsoft.Json;
 
 namespace IEXTrading.Infrastructure.IEXTradingHandler
@@ -40,9 +41,60 @@ namespace IEXTrading.Infrastructure.IEXTradingHandler
             if (!companyList.Equals(""))
             {
                 companies = JsonConvert.DeserializeObject<List<Company>>(companyList);
-                companies = companies.GetRange(0, 9);
+                companies = companies.Where(c => c.isEnabled && c.type != "N/A").ToList();
+                //companies = companies.GetRange(0, 9);
             }
             return companies;
+        }
+
+        public Dictionary<String,Dictionary<String,Quote>> GetQuotes(List<Company> companies)
+        {
+            string symbols = "";
+            int skipCount = 0;
+            Dictionary<String, Dictionary<String, Quote>> companiesQuote = new Dictionary<String, Dictionary<String, Quote>>();
+            while (true)
+            {
+                if (skipCount <= companies.Count())
+                {
+                    symbols = string.Join(",", companies.Skip(skipCount).Take(100).Select(c => c.symbol).ToArray());
+                    //foreach (var company in companies.Skip(skipCount).Take(100))
+                    //{
+                    //    symbols = symbols + company.symbol + ",";
+                    //}
+
+                    string IEXTrading_API_PATH = BASE_URL + "stock/market/batch?symbols=" + symbols + "&types=quote";
+                    string responseData = "";
+                    Dictionary<string,Dictionary<String,Quote>> quotes = null;
+                    //Dictionary<string, Quote> quotesDict = new Dictionary<string, Quote>();
+                    HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        responseData = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    }
+
+                    if (!string.IsNullOrEmpty(responseData))
+                    {
+                        quotes = JsonConvert.DeserializeObject<Dictionary<String,Dictionary<String, Quote>>>(responseData);
+                        quotes = quotes.Where(c => c.Value?.FirstOrDefault().Value?.week52High > c.Value?.FirstOrDefault().Value?.week52Low && c.Value?.FirstOrDefault().Value?.companyName.Length > 0).ToDictionary(x => x.Key, y => y.Value);
+                        skipCount += 100;
+                        companiesQuote = companiesQuote.Concat(quotes).ToDictionary(x => x.Key, y => y.Value);
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            if (companiesQuote != null)
+            {
+                foreach (var companyQuote in companiesQuote)
+                {
+                    var quoteValue = companyQuote.Value?.FirstOrDefault().Value;
+                    quoteValue.annualPerformance = (quoteValue?.close - quoteValue?.week52Low) / (quoteValue?.week52High - quoteValue?.week52Low);
+                }
+            }
+            return companiesQuote.OrderByDescending(a => a.Value?.FirstOrDefault().Value?.annualPerformance).Take(5).ToDictionary(x=>x.Key, y=>y.Value);
         }
 
         /****
