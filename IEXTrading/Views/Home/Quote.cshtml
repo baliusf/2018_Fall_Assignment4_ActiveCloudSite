@@ -2,16 +2,6 @@
 <h2>Quotes</h2>
 <hr />
 
-<form >
-    <select name="quote">
-        @foreach (var company in Model.Companies)
-        {
-            <option value=@company.symbol selected>@company.name</option>
-        }
-    </select>
-    <input type="submit" value="Get Quote" />
-</form>
-
 <table class="table">
     <thead>
         <tr>
