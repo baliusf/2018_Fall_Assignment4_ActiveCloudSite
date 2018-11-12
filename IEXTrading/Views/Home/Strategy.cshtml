@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewData["Title"] = "Refresh";
+}
+<h1>Strategy & Implementation</h1>
+<hr />
+<p>A popular quote by Warren Buffet says “Risk comes from not knowing what you are doing” in the context of Stock picking as it is an important factor for capital market investment success. Strategies like 52-Week Price Range Strategy, Cash return on invested capital check, Return on Equity are well known techniques which forms the basis for selecting a stock. For this project we have implemented 52-week price momentum strategy to select the top five stocks.</p>
+<hr />
+
+<h2>What is a '52-Week High/Low'?</h2>
+<p>It is intuitive that human learns based on his past experience or learnings. This idea forms the crux of many popular strategies and algorithms and 52-Week High/Low is a paragon of this. It is the highest and the lowest price that a stock has traded at during the previous year and investors term it as an crucial indicator in determining a stock’s current value and forecasting it.</p>
+<hr />
+
+<h2>Idea behind the Strategy:</h2>
+<p>The 52-week high/low figure often acts as a decision point as stock traders may buy a stock when the price exceeds its 52-week high, or sell when the price falls below its 52-week low. The principle behind this strategy is “Movement of inertia” (a popular concept in physics) which says that if worth of a price falls out from the 52-week range (either above or below), there is enough momentum to continue the price move in the identical direction.</p>
+<hr />
+
+<h2>Determining the “High” Value Stocks</h2>
+<p>The stock value is like an oscillating pendulum and inorder to stabilize the strategy in 52-week high/low we consider the daily closing price. If a stock value goes beyond 52-week high intra-day, but end up closing below the previous 52-week high then we don’t consider this as a potential case of “high” and emphasize more on the closing value rather than all the values recorded during the trading on any particular given day.</p>
+<hr />
+
+<h2>52-Week Price Momentum Strategy</h2>
+<p>Price momentum, is used in pickingup the top 5 stocks and we consider the proximity of a stock to its 52-week high or low. The formula that we used to measure price momentum was </p>
+<h4>Price momentum = (Current price - 52 week low) / (52 week high - 52 week low) </h4>
+<p>Stocks that score  around 82% or higher on this formula tend to outperform, while stocks that score 41% or lower tend to underperform. </p>
+<p>Regarding the implementation, the symbols tab will take little time to load since it fetches quote for all the companies present in the server after which it computes the price momentum from the above mentioned formula.</p>
+<hr />
+<hr />
+<hr />
+<hr />
+
+<h1>Self Reflections</h1>
+<h4>Kartikay Bali</h4>
+<p>I have spent close to 10 hours in working on the stock picking assignment. Working on this assignment was really helpful in developing both my technical and business knowledge as I got to learn interesting stuff about the stock market. I have developed numerous mobile apps and little components of web apps in Ruby. This was my first C# web app. By the end of this assignment, I am really confident in myself in building a C# web app. Even though we struggled a little to search for the best api as per the requirements, but after searching and exploring for a while we understood stock markets and it has also gotten a new turn and now I could see stuff related to stocks in a totally different perspective that would definitely help me in my career.</p>
+<h4>Baranidhar Eswaramoorthy Manoharan</h4>
+<p>I have spent close to 8 hours in working on the stock picking assignment. Working on this assignment was really helpful in developing both my technical and business knowledge as I got to learn unexplored concepts in C# such as Dictionary, cshtml and also interesting stuff related to the stock market. By the end of this assignment, I am really confident in myself working with MVC framework. The way I understood stock markets has also gotten a new turn and now I could see stuff related to stocks in a totally different perspective that would definitely help me in my career.</p>
+<h4>Uday Karnam</h4>
+<p>Inspite of having a savvy of MVC concepts I had never implemented these concepts by creating an application but this assignment gave me the first hand expereience of accomplishing this task. Initially it was a daunting task to implement this but a thorough understanding of concepts through the exemplar provided in class discussion assisted me in developing this application. I felt that the experience of writing data to database and creating Quote views and models are worth noting and now I am more comfortable with these MVC termonologies. Besides the idea of implementing MVC concepts through stock pricing triggered more interest because of my penchant towards stocks/finance.</p>

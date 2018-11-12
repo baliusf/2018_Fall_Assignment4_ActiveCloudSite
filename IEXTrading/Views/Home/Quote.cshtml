@@ -6,10 +6,10 @@
     <thead>
         <tr>
             <th>
-                Symbol
+                Company Name
             </th>
             <th>
-                Company Name
+                Symbol
             </th>
             <th>
                 Primary Exchange
@@ -47,9 +47,6 @@
             <th>
                 Week52 Low
             </th>
-            <th>
-                Market Cap
-            </th>
         </tr>
     </thead>
     <tbody>
@@ -57,10 +54,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].symbol)
+                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].companyName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].companyName)
+                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].symbol)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].primaryExchange)
@@ -97,9 +94,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].week52Low)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].marketCap)
                 </td>
             </tr>
         }

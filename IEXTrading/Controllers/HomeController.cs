@@ -54,6 +54,10 @@ namespace MVCTemplate.Controllers
             return View(companiesQuoteRoot);
         }
 
+        public IActionResult Strategy() {
+            return View();
+        }
+
         /****
          * The Chart action calls the GetChart method that returns 1 year's equities for the passed symbol.
          * A ViewModel CompaniesEquities containing the list of companies, prices, volumes, avg price and volume.
