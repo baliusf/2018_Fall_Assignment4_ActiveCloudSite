@@ -36,11 +36,22 @@ namespace MVCTemplate.Controllers
             ViewBag.dbSucessComp = 0;
             IEXHandler webHandler = new IEXHandler();
             List<Company> companies = webHandler.GetSymbols();
+            Dictionary<String, Dictionary<String, Quote>> companiesQuotes = webHandler.GetQuotes(companies);
+            companies = companies.Where(c => companiesQuotes.Keys.Contains(c.symbol)).ToList();
 
-            //Save comapnies in TempData
+            //Save companies in TempData
             TempData["Companies"] = JsonConvert.SerializeObject(companies);
+            TempData["CompaniesQuote"] = JsonConvert.SerializeObject(companiesQuotes);
 
             return View(companies);
+        }
+
+        public IActionResult Quote()
+        {
+            List < Company > companies = JsonConvert.DeserializeObject<List<Company>>(TempData["Companies"].ToString());
+            Dictionary < String, Dictionary < String, Quote >> companiesQuotes = JsonConvert.DeserializeObject<Dictionary<String, Dictionary<String, Quote>>>(TempData["CompaniesQuote"].ToString());
+            CompaniesQuoteRoot companiesQuoteRoot = new CompaniesQuoteRoot(companies, companiesQuotes);
+            return View(companiesQuoteRoot);
         }
 
         /****
