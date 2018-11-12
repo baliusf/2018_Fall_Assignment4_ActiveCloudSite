@@ -1,0 +1,125 @@
+﻿@model IEXTrading.Models.ViewModel.CompaniesQuoteRoot
+<h2>Quotes</h2>
+<hr />
+
+<form >
+    <select name="quote">
+        @foreach (var company in Model.Companies)
+        {
+            <option value=@company.symbol selected>@company.name</option>
+        }
+    </select>
+    <input type="submit" value="Get Quote" />
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Symbol
+            </th>
+            <th>
+                Company Name
+            </th>
+            <th>
+                Primary Exchange
+            </th>
+            <th>
+                Sector
+            </th>
+            <th>
+                Calculation Price
+            </th>
+            <th>
+                Open
+            </th>
+            <th>
+                Close
+            </th>
+            <th>
+                High
+            </th>
+            <th>
+                Low
+            </th>
+            <th>
+                Change
+            </th>
+            <th>
+                Change%
+            </th>
+            <th>
+                Avg Total Volume
+            </th>
+            <th>
+                Week52 High
+            </th>
+            <th>
+                Week52 Low
+            </th>
+            <th>
+                Market Cap
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var company in Model.Companies)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].symbol)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].companyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].primaryExchange)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].sector)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].calculationPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].open)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].close)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].high)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].low)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].change)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].changePercent)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].avgTotalVolume)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].week52High)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].week52Low)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].marketCap)
+                </td>
+            </tr>
+        }
+        <tr>
+            <td>
+                <a id="dbopt" asp-controller="Home" asp-action="PopulateSymbols"><img src="~/images/button_save-data.png" /></a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<script>
+    alertDbSave(@ViewBag.dbSuccessComp);
+</script>
