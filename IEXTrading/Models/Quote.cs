@@ -45,6 +45,7 @@ namespace IEXTrading.Models
         public float? week52High { get; set; }
         public float? week52Low { get; set; }
         public float? ytdChange { get; set; }
+        public DateTime? lastSaved { get; set; }
 
         public float? annualPerformance { get; set; }
     }

@@ -1,10 +1,11 @@
-﻿@{
+﻿@model List<IEXTrading.Models.Quote>
+
+@{
     ViewData["Title"] = "Index";
 }
 
 <h2>IEX Trading Application</h2>
 <hr />
-
 <div>
     <p>
         This application let's you fetch trading data from IEX via their public <a href="https://iextrading.com/developer/">API</a>.
@@ -29,3 +30,88 @@
         </ul>
     </p>
 </div>
+<hr />
+
+@if (Model.Count > 0) {
+    <h1>Last Saved Quotes</h1>
+    <hr />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Company Name
+            </th>
+            <th>
+                Primary Exchange
+            </th>
+            <th>
+                Sector
+            </th>
+            <th>
+                Open
+            </th>
+            <th>
+                Close
+            </th>
+            <th>
+                High
+            </th>
+            <th>
+                Low
+            </th>
+            <th>
+                Change%
+            </th>
+            <th>
+                Avg Total Volume
+            </th>
+            <th>
+                Week52 High
+            </th>
+            <th>
+                Week52 Low
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var quote in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => quote.companyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => quote.primaryExchange)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => quote.sector)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => quote.open)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => quote.close)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => quote.high)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => quote.low)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => quote.changePercent)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => quote.avgTotalVolume)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => quote.week52High)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => quote.week52Low)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+}

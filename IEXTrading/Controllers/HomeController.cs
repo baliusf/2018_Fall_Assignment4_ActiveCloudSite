@@ -23,7 +23,7 @@ namespace MVCTemplate.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(getLastSavedQuotes());
         }
 
         /****
@@ -187,6 +187,25 @@ namespace MVCTemplate.Controllers
             ViewBag.dbSuccessComp = 1;
         }
 
+        public IActionResult SaveQuote(string symbol)
+        {
+            IEXHandler webHandler = new IEXHandler();
+            Quote quote = webHandler.GetQuote(symbol);
+            //List<Equity> equities = JsonConvert.DeserializeObject<List<Equity>>(TempData["Equities"].ToString());
+            
+                if (dbContext.Quotes.Where(c => c.symbol.Equals(quote.symbol)).Count() == 0)
+                {
+                    quote.lastSaved = DateTime.Now;
+                    dbContext.Quotes.Add(quote);
+                }
+            
+
+            dbContext.SaveChanges();
+            ViewBag.dbSuccessChart = 1;
+            
+            return View("Quote", getCompaniesQuoteModel(quote));
+        }
+
 
         /****
          * Deletes the records from tables.
@@ -249,6 +268,12 @@ namespace MVCTemplate.Controllers
         {
             List<Company> companies = dbContext.Companies.Take(1000).ToList();
             return companies;
+        }
+
+        public List<Quote> getLastSavedQuotes()
+        {
+            List<Quote> quotes = dbContext.Quotes.Where(a => a.lastSaved != null).OrderByDescending(a => a.lastSaved).Take(5).ToList();
+            return quotes;
         }
     }
 }
