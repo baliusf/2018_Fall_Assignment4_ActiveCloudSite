@@ -93,6 +93,26 @@ namespace IEXTrading.Infrastructure.IEXTradingHandler
             return companiesQuote.OrderByDescending(a => a.Value?.FirstOrDefault().Value?.annualPerformance).Take(5).ToDictionary(x=>x.Key, y=>y.Value);
         }
 
+        public Quote GetQuote(string symbol)
+        {
+            string IEXTrading_API_PATH = BASE_URL + "stock/" + symbol + "/quote";
+            string responseData = "";
+            Quote quote = new Quote();
+
+            HttpResponseMessage response = httpClient.GetAsync(IEXTrading_API_PATH).GetAwaiter().GetResult();
+            if (response.IsSuccessStatusCode)
+            {
+                responseData = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            }
+
+            if (!string.IsNullOrEmpty(responseData))
+            {
+                quote = JsonConvert.DeserializeObject<Quote>(responseData);
+            }
+
+            return quote;
+        }
+
         /****
          * Calls the IEX stock API to get 1 year's chart for the supplied symbol. 
         ****/
