@@ -1,109 +1,107 @@
-﻿@model IEXTrading.Models.ViewModel.CompaniesQuoteRoot
-<h2>Quotes</h2>
-<hr />
+﻿@model List<IEXTrading.Models.Quote>
+<head>
+    <link rel="stylesheet" href="css/site.css">
+</head>
+    <h2>Quotes</h2>
+    <hr />
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Company Name
-            </th>
-            <th>
-                Symbol
-            </th>
-            <th>
-                Primary Exchange
-            </th>
-            <th>
-                Sector
-            </th>
-            <th>
-                Calculation Price
-            </th>
-            <th>
-                Open
-            </th>
-            <th>
-                Close
-            </th>
-            <th>
-                High
-            </th>
-            <th>
-                Low
-            </th>
-            <th>
-                Change
-            </th>
-            <th>
-                Change%
-            </th>
-            <th>
-                Avg Total Volume
-            </th>
-            <th>
-                Week52 High
-            </th>
-            <th>
-                Week52 Low
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var company in Model.Companies)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].companyName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].symbol)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].primaryExchange)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].sector)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].calculationPrice)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].open)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].close)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].high)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].low)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].change)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].changePercent)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].avgTotalVolume)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].week52High)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.companiesQuoteRoot[company.symbol]["quote"].week52Low)
-                </td>
+                <th>
+                    Company Name
+                </th>
+                <th>
+                    Symbol
+                </th>
+                <th>
+                    Primary Exchange
+                </th>
+                <th>
+                    Sector
+                </th>
+                <th>
+                    Calculation Price
+                </th>
+                <th>
+                    Open
+                </th>
+                <th>
+                    Close
+                </th>
+                <th>
+                    High
+                </th>
+                <th>
+                    Low
+                </th>
+                <th>
+                    Change
+                </th>
+                <th>
+                    Change%
+                </th>
+                <th>
+                    Avg Total Volume
+                </th>
+                <th>
+                    Week52 High
+                </th>
+                <th>
+                    Week52 Low
+                </th>
             </tr>
-        }
-        <tr>
-            <td>
-                <a id="dbopt" asp-controller="Home" asp-action="PopulateSymbols"><img src="~/images/button_save-data.png" /></a>
-            </td>
-        </tr>
-    </tbody>
-</table>
-<script>
+        </thead>
+        <tbody>
+            @foreach (var quote in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => quote.companyName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => quote.symbol)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => quote.primaryExchange)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => quote.sector)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => quote.calculationPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => quote.open)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => quote.close)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => quote.high)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => quote.low)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => quote.change)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => quote.changePercent)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => quote.avgTotalVolume)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => quote.week52High)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => quote.week52Low)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <script>
     alertDbSave(@ViewBag.dbSuccessComp);
-</script>
+    </script>

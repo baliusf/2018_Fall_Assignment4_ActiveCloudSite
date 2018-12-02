@@ -57,10 +57,6 @@ namespace IEXTrading.Infrastructure.IEXTradingHandler
                 if (skipCount <= companies.Count())
                 {
                     symbols = string.Join(",", companies.Skip(skipCount).Take(100).Select(c => c.symbol).ToArray());
-                    //foreach (var company in companies.Skip(skipCount).Take(100))
-                    //{
-                    //    symbols = symbols + company.symbol + ",";
-                    //}
 
                     string IEXTrading_API_PATH = BASE_URL + "stock/market/batch?symbols=" + symbols + "&types=quote";
                     string responseData = "";

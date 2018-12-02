@@ -36,22 +36,31 @@ namespace MVCTemplate.Controllers
             ViewBag.dbSucessComp = 0;
             IEXHandler webHandler = new IEXHandler();
             List<Company> companies = webHandler.GetSymbols();
-            Dictionary<String, Dictionary<String, Quote>> companiesQuotes = webHandler.GetQuotes(companies);
-            companies = companies.Where(c => companiesQuotes.Keys.Contains(c.symbol)).ToList();
+            List<Quote> quotes = getTopQuotes();
+            if(quotes == null)
+            {
+                Dictionary<String, Dictionary<String, Quote>> companiesQuotes = webHandler.GetQuotes(companies);
+                TempData["Companies"] = JsonConvert.SerializeObject(companies);
+                TempData["CompaniesQuote"] = JsonConvert.SerializeObject(companiesQuotes);
+                SaveQuotes();
+                quotes = getTopQuotes();
+            }
+            
+            List<String> quoteSymbols = quotes.Select(q => q.symbol).ToList();
+            companies = companies.Where(c => quoteSymbols.Contains(c.symbol)).ToList();
+           
 
             //Save companies in TempData
             TempData["Companies"] = JsonConvert.SerializeObject(companies);
-            TempData["CompaniesQuote"] = JsonConvert.SerializeObject(companiesQuotes);
+            
 
             return View(companies);
         }
 
         public IActionResult Quote()
         {
-            List < Company > companies = JsonConvert.DeserializeObject<List<Company>>(TempData["Companies"].ToString());
-            Dictionary < String, Dictionary < String, Quote >> companiesQuotes = JsonConvert.DeserializeObject<Dictionary<String, Dictionary<String, Quote>>>(TempData["CompaniesQuote"].ToString());
-            CompaniesQuoteRoot companiesQuoteRoot = new CompaniesQuoteRoot(companies, companiesQuotes);
-            return View(companiesQuoteRoot);
+            List<Quote> quotes = getTopQuotes();
+            return View(quotes);
         }
 
         public IActionResult Strategy() {
@@ -137,6 +146,24 @@ namespace MVCTemplate.Controllers
             return View("Chart", companiesEquities);
         }
 
+        public void SaveQuotes()
+        {
+            List<Company> companies = JsonConvert.DeserializeObject<List<Company>>(TempData["Companies"].ToString());
+            Dictionary<String, Dictionary<String, Quote>> companiesQuotes = JsonConvert.DeserializeObject<Dictionary<String, Dictionary<String, Quote>>>(TempData["CompaniesQuote"].ToString());
+            foreach (var companyQuote in companiesQuotes)
+            {
+                //Database will give PK constraint violation error when trying to insert record with existing PK.
+                //So add company only if it doesnt exist, check existence using symbol (PK)
+                var quoteValue = companyQuote.Value?.FirstOrDefault().Value;
+                if (dbContext.Quotes.Where(c => c.symbol.Equals(quoteValue.symbol)).Count() == 0)
+                {
+                    dbContext.Quotes.Add(quoteValue);
+                }
+            }
+            dbContext.SaveChanges();
+            ViewBag.dbSuccessComp = 1;
+        }
+
         /****
          * Deletes the records from tables.
         ****/
@@ -183,5 +210,10 @@ namespace MVCTemplate.Controllers
             return new CompaniesEquities(companies, equities.Last(), dates, prices, volumes, avgprice, avgvol);
         }
 
+        public List<Quote> getTopQuotes()
+        {
+            List<Quote> quotes = dbContext.Quotes.ToList();
+            return quotes.OrderByDescending(a => a.annualPerformance).Take(5).ToList();
+        }
     }
 }

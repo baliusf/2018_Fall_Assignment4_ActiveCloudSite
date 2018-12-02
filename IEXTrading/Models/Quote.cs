@@ -1,8 +1,10 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 namespace IEXTrading.Models
 {
     public class Quote
     {
+        [Key]
         public string symbol { get; set; }
         public string companyName { get; set; }
         public string primaryExchange { get; set; }
