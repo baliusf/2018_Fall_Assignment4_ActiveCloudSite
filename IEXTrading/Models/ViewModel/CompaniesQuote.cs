@@ -16,7 +16,14 @@ namespace IEXTrading.Models.ViewModel
 
     public class CompaniesQuote
     {
-        public Dictionary<string, Quote> quote { get; set; }
+        public List<Company> companies { get; set; }
+        public Quote quote { get; set; }
+
+        public CompaniesQuote(List<Company> companies, Quote quote)
+        {
+            this.companies = companies;
+            this.quote = quote;
+        }
     }
 
 }

@@ -1,107 +1,77 @@
-﻿@model List<IEXTrading.Models.Quote>
-<head>
-    <link rel="stylesheet" href="css/site.css">
-</head>
-    <h2>Quotes</h2>
-    <hr />
+﻿@model IEXTrading.Models.ViewModel.CompaniesQuote
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Company Name
-                </th>
-                <th>
-                    Symbol
-                </th>
-                <th>
-                    Primary Exchange
-                </th>
-                <th>
-                    Sector
-                </th>
-                <th>
-                    Calculation Price
-                </th>
-                <th>
-                    Open
-                </th>
-                <th>
-                    Close
-                </th>
-                <th>
-                    High
-                </th>
-                <th>
-                    Low
-                </th>
-                <th>
-                    Change
-                </th>
-                <th>
-                    Change%
-                </th>
-                <th>
-                    Avg Total Volume
-                </th>
-                <th>
-                    Week52 High
-                </th>
-                <th>
-                    Week52 Low
-                </th>
-            </tr>
-        </thead>
+@{
+    ViewData["Title"] = "Get Quote";
+}
+
+<h2>Get Quote</h2>
+<hr />
+
+<form asp-controller="Home" asp-action="Quote" method="get">
+    <select name="symbol">
+        @foreach (var company in Model.companies)
+        {
+            <option value=@company.symbol selected>@company.name</option>
+        }
+    </select>
+    <input type="submit" value="Get Quote" />
+</form>
+@if (Model.quote != null)
+{
+    var quote = Model.quote;
+    <hr />
+    <table>
         <tbody>
-            @foreach (var quote in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => quote.companyName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => quote.symbol)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => quote.primaryExchange)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => quote.sector)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => quote.calculationPrice)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => quote.open)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => quote.close)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => quote.high)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => quote.low)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => quote.change)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => quote.changePercent)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => quote.avgTotalVolume)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => quote.week52High)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => quote.week52Low)
-                    </td>
-                </tr>
-            }
+            <tr>
+                <td>
+                    Current Quote Data
+                    <table>
+                        <tr>
+                            <td>
+                                Company Name
+                            </td>
+                            <td>
+                                @quote.companyName
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Primary Exchange
+                            </td>
+                            <td>
+                                @quote.primaryExchange
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Sector
+                            </td>
+                            <td>
+                                @quote.sector
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Change
+                            </td>
+                            <td>
+                                @quote.change
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Change %
+                            </td>
+                            <td>
+                                @quote.changePercent
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <a asp-controller="Home" asp-action="SaveQuote" asp-route-symbol="@Model.quote.symbol"><img src="~/images/button_save-data.png" /></a>
+                </td>
+            </tr>
         </tbody>
     </table>
-    <script>
-    alertDbSave(@ViewBag.dbSuccessComp);
-    </script>
+}
