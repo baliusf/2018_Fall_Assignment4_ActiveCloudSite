@@ -8,13 +8,13 @@
 <hr />
 
 <form asp-controller="Home" asp-action="Chart" method="get">
-    <select name="symbol">
+    <select id="symbolDropDown" name="symbol" style="width:70%">
         @foreach (var company in Model.Companies)
         {
             <option value=@company.symbol selected>@company.name</option>
         }
     </select>
-    <input type="submit" value="Get Chart" />
+    <input class="btn btn-light" type="submit" value="Get Chart" />
 </form>
 @if (Model.Current != null)
 {
@@ -24,10 +24,10 @@
         <tbody>
             <tr>
                 <td>
-                    Current Chart Data
-                    <table>
+                    
+                    <table class="table">
                         <tr>
-                            <td>
+                            <td style="font-weight:bolder;padding-right:5px">
                                 Symbol
                             </td>
                             <td>
@@ -35,7 +35,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td style="font-weight:bolder;padding-right:5px">
                                 Open
                             </td>
                             <td>
@@ -43,7 +43,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td style="font-weight:bolder;padding-right:5px">
                                 High
                             </td>
                             <td>
@@ -51,7 +51,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td style="font-weight:bolder;padding-right:5px">
                                 Close
                             </td>
                             <td>
@@ -59,11 +59,17 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td style="font-weight:bolder;padding-right:5px">
                                 Volume
                             </td>
                             <td>
                                 @equity.volume
+                            </td>
+                            
+                        </tr>
+                        <tr>
+                            <td rowspan="2">
+                                <a class="btn btn-success saveButton" asp-controller="Home" asp-action="SaveCharts" asp-route-symbol="@Model.Current.symbol">Save</a>
                             </td>
                         </tr>
                     </table>
@@ -73,9 +79,7 @@
                         <canvas id="myChart" height="500" width="800"></canvas>
                     </div>
                 </td>
-                <td>
-                    <a asp-controller="Home" asp-action="SaveCharts" asp-route-symbol="@Model.Current.symbol"><img src="~/images/button_save-data.png" /></a>
-                </td>
+                
             </tr>
         </tbody>
     </table>
@@ -84,4 +88,9 @@
 <script>
     getChart("@Model.Dates", "@Model.Prices", "@Model.Volumes", @Model.AvgPrice, @Model.AvgVolume);
     alertDbSave(@ViewBag.dbSuccessChart);
+    $(document).ready(function () {
+        $("#symbolDropDown").select2({
+            placeholder: "Select a Profile"
+        });
+    });
 </script>

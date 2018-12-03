@@ -64,11 +64,26 @@ namespace MVCTemplate.Controllers
             return View(quotes);
         }
 
+        public IActionResult GetQuote(string symbol)
+        {
+            ViewBag.dbSuccessChart = 0;
+            Quote quote = null;
+            if (symbol != null && symbol != "")
+            {
+                IEXHandler webHandler = new IEXHandler();
+                quote = webHandler.GetQuote(symbol);
+            }
+
+            CompaniesQuote companiesQuote = getCompaniesQuoteModel(quote);
+
+            return View(companiesQuote);
+        }
+
         public IActionResult Quote(string symbol)
         {
             ViewBag.dbSuccessChart = 0;
             Quote quote = null;
-            if (symbol != null)
+            if (symbol != null && symbol != "")
             {
                 IEXHandler webHandler = new IEXHandler();
                 quote = webHandler.GetQuote(symbol);
@@ -203,7 +218,7 @@ namespace MVCTemplate.Controllers
             dbContext.SaveChanges();
             ViewBag.dbSuccessChart = 1;
             
-            return View("Quote", getCompaniesQuoteModel(quote));
+            return View("GetQuote", getCompaniesQuoteModel(quote));
         }
 
 
